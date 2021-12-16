@@ -1,0 +1,27 @@
+## Initialization
+import lib
+import discord
+
+from discord.ext import commands
+
+## Class setup
+class CMD_CLASS(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+        ## Help stuff
+        self.category = lib.getCategory(self.__module__)
+        self.description = 'Command description'
+        self.usage = f"""
+        {self.bot.command_prefix}CMD_WORD <usage>
+        """
+        self.forbidden = False
+
+    ## Command defining
+    @commands.command()
+    async def CMD_WORD(self, ctx):
+        await ctx.send('Command function goes here')
+
+## Allow use of cog class by main bot instance
+def setup(bot):
+    bot.add_cog(CMD_CLASS(bot))

@@ -1,0 +1,42 @@
+
+# Make a copy of this file called config.yaml with your chosen edits
+
+#Discord API settings
+discord:
+  #Provide your login token
+  token: "TOKEN"      
+  #Manage requested intents                  
+  intents:        
+    members: True
+    guilds: True
+    reactions : True
+
+#Bot settings        
+options:
+  #Bot Command Prefix 
+  prefix: "!" 
+  #Message embed settings
+  embed:
+    colour:
+      #RGB values for colour presets
+      default:
+        r: 0xb4
+        g: 0xeb
+        b: 0xeb
+      error:
+        r: 0xff
+        g: 0x00
+        b: 0x00
+      #Thumbnail image URL
+    thumbnail: "https://cdn.discordapp.com/avatars/700843606923149352/2e2840d61258ef8a5cc976571cb3851a.png?size=256"
+  #Logging behaviour
+  logging:                              
+    #WARNING! if you disable all logging and something breaks, fixing it will be very difficult. 
+    #Recommend you leave console logging enabled as a minimum
+    #Enable logging to console
+    logToConsole: True       
+    #Enable logging to a file
+    logToFile: False
+    logFilePath: "path/to/log.txt"
+
+  
