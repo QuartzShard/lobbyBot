@@ -12,6 +12,7 @@ hr="─────────────────────────�
 defaultColour = Colour.from_rgb(**cfg['options']['embed']['colour']['default'])
 errorColour = Colour.from_rgb(**cfg['options']['embed']['colour']['error'])
 
+## Datatypes and templates
 guildVarsSkel={
                 "queueChannel":None, #Channel ID for queueing users
                 "queueEmbed":None, #Embed message used for joining/monitoring queue 
@@ -21,6 +22,18 @@ guildVarsSkel={
                 "playerCap":0, #lobby player cap
                 "queueCategory": None #Category to make lobbies under
                 }
+
+class lobby():
+    """
+    Models a Game Lobby. Has an associated discord channel and list of players
+    """
+    def __init__(self, channel, players=[]):
+        """
+        channel - A Discord Channel (discord.VoiceChannel)
+        players - A list of user IDs
+        """
+        self.channel = channel
+        self.players = players 
 
 ## Log to console and/or file with timestamp, based on config contents
 def log(event):

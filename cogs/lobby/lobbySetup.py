@@ -12,12 +12,12 @@ class lobbySetup(commands.Cog):
         self.category = lib.getCategory(self.__module__)
         self.description = f"Configure the bot to use a set of channels"
         self.usage = f"""
-        {self.bot.command_prefix}lobbySetup <queueChannel> <gameChannel> <playerCap> [<category>]
+        {self.bot.command_prefix}lobbySetup <queueChannel> <gameChannel> <playerCap> <category>
 
         queueChannel is the name of the voice channel users should join to be moved into a game channel
-        gameChannel is the name of the voice channel the bot should make, and will be appended with a number (e.g, "Lobby" will result in channels named "Lobby 1, Lobby 2)
+        gameChannel is the name of the voice channel the bot should make, and will be appended with a number (e.g, "Lobby" will result in channels named "Lobby 1", "Lobby 2")
         playerCap is the number of players each lobby should hold
-        category is an optional argument that specifies the channel category to create lobbies under
+        category is the channel category to create lobbies under
 
         """
         self.forbidden = False
@@ -51,15 +51,19 @@ class lobbySetup(commands.Cog):
                     pass
 
         ## Setup channels
-        guildVars["queueChannel"] = (await lib.apiWrappers.getChannel(args[0], guild)).id
+        category = await lib.apiWrappers.getCategory(args[3], guild)
+        guildVars["queueCategory"] = category.id
+        channel = await guild.create_voice_channel(
+                    f"{args[0]}",
+                    category=category,
+                )
+        guildVars["queueChannel"] = channel.id
         guildVars["gameChannel"] = args[1]
         guildVars["playerCap"] = int(args[2])
-    
-        guildVars["queueCategory"] = (await lib.apiWrappers.getCategory(args[3],guild)).id
         
         ## Send message and add reactions  
         embed = lib.embed(
-            title="React to join the queue!",
+            title=f"Join {channel.name} and react to this message enter the queue!",
             sections=[
                 ("Players in queue:",f"{len(guildVars['queue'])}"),
                 ("Currently open lobbies:",f"{len(guildVars['lobbies'])}")
@@ -82,7 +86,7 @@ class lobbySetup(commands.Cog):
                 channel = guild.get_channel(guildVars["queueEmbed"][0])
                 message = await channel.fetch_message(guildVars["queueEmbed"][1])
                 embed = lib.embed(
-                    title="React to join the queue!",
+                    title=f"Join {(await lib.apiWrappers.getChannel(guildVars['queueChannel'], guild)).name} and react to this message enter the queue!",
                     sections=[
                         ("Players in queue:",f"{len(guildVars['queue'])}"),
                         ("Currently open lobbies:",f"{len(guildVars['lobbies'])}")
