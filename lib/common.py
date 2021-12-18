@@ -7,9 +7,20 @@ from discord import Embed, Color, Colour
 ## Exported values
 with open("config.yaml", "r") as ymlfile:
     cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
+
 hr="─────────────────────────────────────────────────"
 defaultColour = Colour.from_rgb(**cfg['options']['embed']['colour']['default'])
 errorColour = Colour.from_rgb(**cfg['options']['embed']['colour']['error'])
+
+guildVarsSkel={
+                "queueChannel":None, #Channel ID for queueing users
+                "queueEmbed":None, #Embed message used for joining/monitoring queue 
+                "queue":[], #Users in the queue
+                "lobbies":[], #Currently active lobbies
+                "gameChannel":None, #Pattern to create game channels with
+                "playerCap":0, #lobby player cap
+                "queueCategory": None #Category to make lobbies under
+                }
 
 ## Log to console and/or file with timestamp, based on config contents
 def log(event):

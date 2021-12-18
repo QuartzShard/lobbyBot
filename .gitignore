@@ -2,4 +2,4 @@
 config.yaml
 __pycache__/
 test.py
-guildConf.json
+guildVars.json

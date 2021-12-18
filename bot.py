@@ -21,12 +21,12 @@ class lobbyBot(commands.Bot):
         ## Remove default help command to replace with custom one
         self.remove_command('help')
         
-        ## Retrieve emoji : role map
+        ## Retrieve queue setups for guilds
         try:
-            with open("guildConf.json","r") as file:
-                self.guildConf = json.load(file)
+            with open("guildVars.json","r") as file:
+                self.guildVars = json.load(file)
         except FileNotFoundError:
-            self.guildConf = {}
+            self.guildVars = {}
             
         ## Load Cogs
         for root, subdirs, files in os.walk("./cogs"):
@@ -49,15 +49,13 @@ class lobbyBot(commands.Bot):
         lib.log(f'User ID: {self.user.id}')
         lib.log('--------------------------------')
 
-    ## Setup guildconf for new guild
+    ## Setup guildVars for new guild
     async def on_guild_join(self, guild):
-        self.guildConf[str(guild.id)] = {
-            "selfrole":{}
-        }
+        self.guildVars[str(guild.id)] = lib.guildVarsSkel
     
-    ## Dump guildconf on guild remove
+    ## Dump guildVars on guild remove
     async def on_guild_remove(self,guild):
-        del self.guildConf[str(guild.id)]
+        del self.guildVars[str(guild.id)]
     
     ## Inform user of error
     async def on_command_error(self, ctx, err):
@@ -68,13 +66,14 @@ class lobbyBot(commands.Bot):
         )
         await ctx.send(embed=embed)
 
-    ## Store current state of guildconf in a json on shutdown to persist over restarts
+    ## Store current state of guildVars in a json on shutdown to persist over restarts
     def shutdown(self):
-        with open("guildConf.json","w+") as file:
-            json.dump(self.guildConf,file)
+        with open("guildVars.json","w+") as file:
+            json.dump(self.guildVars,file)
 
 ## Create an instance of the bot
 botClient = lobbyBot(lib.cfg['options']['prefix'], intents=intents)
 atexit.register(botClient.shutdown)
-#slash = SlashCommand(botClient,True)
+
+# Login and run the bot using the provided token
 botClient.run(lib.cfg['discord']['token'])

@@ -6,4 +6,4 @@
 from .common import *
 
 ## Expose contents as part of lib.<module>
-from . import role
+from . import apiWrappers

@@ -30,3 +30,19 @@ async def getMember(nameOrID, guild):
         return guild.get_member(nameOrID)
     else:
         return None
+
+async def getChannel(nameOrID,guild):
+    if type(nameOrID) is str:
+        if nameOrID.isdigit():
+            return guild.get_channel(int(nameOrID))
+        else:
+            for channel in guild.channels:
+                if channel.name == nameOrID or str(channel.name) in nameOrID:
+                    return channel
+    elif type(nameOrID) is int:
+        return guild.get_channel(nameOrID)
+    else:
+        return None
+
+async def getCategory(nameOrID,guild):
+    return await getChannel(nameOrID,guild)
