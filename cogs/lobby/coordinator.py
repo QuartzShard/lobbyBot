@@ -26,7 +26,7 @@ class coordinator(commands.Cog):
 
     @commands.command()
     async def settings(self, ctx, *args):
-        await cts.message.reply("wip")
+        await ctx.message.reply("wip")
 
     ## Button listeners
     @commands.Cog.listener()
@@ -73,7 +73,8 @@ class coordinator(commands.Cog):
             queue = guildVars["queue"]
 
             ## Clean up lobbies
-            for l in range(len(lobbies)):
+            l = 0
+            while l < len(lobbies):
                 lobby = lobbies[l]
                 ## Ensure Bot's lobby is synced with users in chat
                 connected = list(map(lambda m: m.id, lobby.channel.members))
@@ -82,6 +83,8 @@ class coordinator(commands.Cog):
                 if len(lobby.players) < 1:
                     await lobby.channel.delete()
                     lobbies.pop(l)
+                else:
+                    l += 1
 
 
 
@@ -109,7 +112,7 @@ class coordinator(commands.Cog):
                 players = []
                 category = await lib.apiWrappers.getCategory(guildVars["queueCategory"], guild)
                 channel = await guild.create_voice_channel(
-                    f"{guildVars['gameChannel']} {i+1}",
+                    f"{guildVars['gameChannel']}",
                     overwrites={guild.default_role:discord.PermissionOverwrite(connect=False)},
                     category=category,
                     user_limit=guildVars["playerCap"]    
