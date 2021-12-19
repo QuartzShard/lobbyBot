@@ -28,7 +28,7 @@ class lobbySetup(commands.Cog):
         self.updateInfo.cancel()
 
     ## Callable command to set up reaction role.
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_guild_permissions(manage_guild=True)
     @commands.command()
     async def lobbySetup(self, ctx, *args):
         guild = ctx.guild
