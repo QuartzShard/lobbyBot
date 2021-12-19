@@ -139,7 +139,7 @@ class coordinator(commands.Cog):
         for guildID in self.bot.guildVars.keys():
             guildVars = self.bot.guildVars[guildID]
             guild = self.bot.get_guild(int(guildID))
-            category = lib.apiWrappers.getCategory(guildVars["queueCategory"], guild)
+            category = await lib.apiWrappers.getCategory(guildVars["queueCategory"], guild)
             for channel in category.channels:
                 if channel.id != guildVars["queueChannel"]:
                     await channel.delete()
