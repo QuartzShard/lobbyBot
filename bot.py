@@ -68,6 +68,8 @@ class lobbyBot(commands.Bot):
 
     ## Store current state of guildVars in a json on shutdown to persist over restarts
     def shutdown(self):
+        for guild in self.guildVars.keys():
+            self.guildVars[guild]["lobbies"] = []
         with open("guildVars.json","w+") as file:
             json.dump(self.guildVars,file)
 
