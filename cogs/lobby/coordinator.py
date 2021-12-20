@@ -141,7 +141,7 @@ class coordinator(commands.Cog):
             guild = self.bot.get_guild(int(guildID))
             category = await lib.apiWrappers.getCategory(guildVars["queueCategory"], guild)
             for channel in category.channels:
-                if channel.id != guildVars["queueChannel"]:
+                if channel.id != guildVars["queueChannel"] and channel.type != discord.ChannelType.text:
                     await channel.delete()
     
 
